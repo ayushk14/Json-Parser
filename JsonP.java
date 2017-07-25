@@ -3,6 +3,7 @@ public class JsonP
 {
     public static int ptr;
     public static char[] input;
+    public static HashMap<String,Integer> keys = new HashMap<String,Integer>(); 
     public static void main(String gg[])
     {
         System.out.println("Enter the input string:");
@@ -36,7 +37,7 @@ public class JsonP
             ptr = fallback;
             return false;
         }
-	if(ptr>=input.length) {ptr=fallback;return false;}
+		if(ptr>=input.length) {ptr=fallback;return false;}
         if((input[ptr] =='}'))
         {
             ptr++;
@@ -53,7 +54,17 @@ public class JsonP
             if(input[ptr] =='}')
             {
                 ptr++;
-                if(ptr>=input.length) {ptr=fallback;return false;}
+//				System.out.println(Thread.currentThread().getStackTrace()[2].getMethodName());
+				String callerMethodName = "validate";
+				if(callerMethodName.equals(Thread.currentThread().getStackTrace()[2].getMethodName()))
+				{
+					return true;
+				}
+                	if(ptr>=input.length) 
+                	{
+                		ptr=fallback;
+                		return false;
+                	}
                 return true;
             }
         }
@@ -96,7 +107,7 @@ public class JsonP
     public static boolean pair()
     {
         int fallback = ptr;
-        if(string() == false)
+        if(keyString() == false)
         {
             ptr = fallback;
             return false;
@@ -114,7 +125,57 @@ public class JsonP
         }
         return true;
     }
-    
+    public static boolean keyString()
+    {
+    	int fallback = ptr;
+    	if(input[ptr++] != '"')
+    	{
+    		ptr =fallback;
+    		return false;
+    	}
+    	if(ptr>=input.length) {ptr = fallback; return false;}
+    	if(keyChars() == false)
+    	{
+    		ptr =fallback;
+    		return false;
+    	}
+    	if(input[ptr++] == '"')
+    	{
+    		if(ptr>=input.length)
+    		{	
+    			ptr =fallback;
+    			return false;
+    		}
+    		return true;
+    	}
+    	return false;
+    }
+    public static boolean keyChars()
+    {
+    	int fallback = ptr;
+    	String temp=new String("");
+    	while(input[ptr] != '"')
+    	{
+    		temp = temp + input[ptr];
+    		ptr++;
+    		if(ptr>=input.length)
+    		{
+    			ptr = fallback;
+    			return false;
+    		}
+    	}
+    	if(!keys.containsKey(temp))
+    	{
+    		keys.put(temp,1);	
+    		return true;
+    	}
+    	else
+    	{
+    		ptr = fallback;
+    		System.out.println("Duplicate key :"+ temp);
+    		return false;
+    	}
+    }
     public static boolean string()
     {
         int fallback = ptr;
