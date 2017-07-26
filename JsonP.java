@@ -3,11 +3,12 @@ public class JsonP
 {
     public static int ptr;
     public static char[] input;
-    public static HashMap<String,Integer> keys = new HashMap<String,Integer>(); 
+    public static HashMap<String,Object> keys = new HashMap<String,Object>(); 
     public static void main(String gg[])
     {
-        System.out.println("Enter the input string:");
-        String s = new Scanner(System.in).nextLine();
+        //System.out.println("Enter the input string:");
+        //String s = new Scanner(System.in).nextLine();
+        String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         input = s.toCharArray();
         if(input.length < 1)
         {
@@ -29,6 +30,16 @@ public class JsonP
     {
         return object();
     }
+    public static boolean check()
+    {
+    	int fallback = ptr;
+    	while(input[ptr] == ' ')
+    	{	
+    		ptr++;
+    		if(ptr>=input.length) {ptr=fallback; return false;}
+    	}
+    	return true;
+    }
     public static boolean object()
     {
         int fallback = ptr;
@@ -36,6 +47,11 @@ public class JsonP
         {
             ptr = fallback;
             return false;
+        }
+        if(check() == false)
+        {
+        	ptr = fallback;
+        	return false;
         }
 		if(ptr>=input.length) {ptr=fallback;return false;}
         if((input[ptr] =='}'))
@@ -60,11 +76,11 @@ public class JsonP
 				{
 					return true;
 				}
-                	if(ptr>=input.length) 
-                	{
-                		ptr=fallback;
-                		return false;
-                	}
+            	if(ptr>=input.length) 
+                {
+                	ptr=fallback;
+                	return false;
+                }
                 return true;
             }
         }
@@ -94,6 +110,11 @@ public class JsonP
                     return false;
                 }
                 if(ptr>=input.length) {ptr=fallback;return false;}
+                if(check() == false)
+                {
+                	ptr = fallback;
+                	return false;
+                }
                 if(member() == false)
                 {
                     ptr = fallback;
@@ -112,12 +133,22 @@ public class JsonP
             ptr = fallback;
             return false;
         }
+        if(check() == false)
+        {
+        	ptr = fallback;
+        	return false;
+        }
         if(input[ptr++] != ':')
         {
             ptr = fallback;
             return false;
         }
         if(ptr>=input.length) {ptr=fallback;return false;}
+        if(check() == false)
+        {
+        	ptr = fallback;
+        	return false;
+        }
         if(value() == false)
         {
             ptr = fallback;
@@ -166,6 +197,7 @@ public class JsonP
     	}
     	if(!keys.containsKey(temp))
     	{
+    		
     		keys.put(temp,1);	
     		return true;
     	}
@@ -404,7 +436,13 @@ public class JsonP
     			if(ptr>=input.length) {ptr=fallback;return false;}
     		}
     		else
+    		{
+    			if(check() == true)
+    			{
+    				if(input[ptr] == ',') return true;
+    			}
     			return false;
+    		}
     	}
     	return true;
     }
@@ -417,7 +455,12 @@ public class JsonP
             ptr = fallback;
             return false;
         }
-	if(ptr>=input.length) {ptr=fallback;return false;}
+		if(ptr>=input.length) {ptr=fallback;return false;}
+		if(check() == false)
+		{
+			ptr = fallback;
+			return false;
+		}
         if(input[ptr] ==']')
         {
             ptr++;
@@ -460,6 +503,11 @@ public class JsonP
 		    if(ptr>=input.length) {ptr=fallback;return false;}
                     ptr = fallback;
                     return false;
+                }
+                if(check() == false)
+                {
+                	ptr =fallback;
+                	return false;
                 }
                 if(elements() == false)
                 {
