@@ -3,12 +3,12 @@ public class JsonP
 {
     public static int ptr;
     public static char[] input;
-    public static HashMap<String,Object> keys = new HashMap<String,Object>(); 
+    public static HashMap<String,JSONObject> keys = new HashMap<String,JSONObject>(); 
     public static void main(String gg[])
     {
-        //System.out.println("Enter the input string:");
-        //String s = new Scanner(System.in).nextLine();
-        String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
+        System.out.println("Enter the input string:");
+        String s = new Scanner(System.in).nextLine();
+        //String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         input = s.toCharArray();
         if(input.length < 1)
         {
@@ -197,8 +197,14 @@ public class JsonP
     	}
     	if(!keys.containsKey(temp))
     	{
-    		
-    		keys.put(temp,1);	
+    		String keyValue = createValue();
+            if(keyValue.compareTo("fal") == 0)
+            {
+                ptr = fallback;
+                return false;
+            }
+            JSONObject jsonObject = new JSONObject(temp,keyValue);
+    		keys.put(temp,jsonObject);	
     		return true;
     	}
     	else
@@ -207,6 +213,119 @@ public class JsonP
     		System.out.println("Duplicate key :"+ temp);
     		return false;
     	}
+    }
+    public static String createValue()
+    {
+        int counter = ptr;
+        int fallback = ptr;
+        if(input[counter] == ':') counter++;
+        if(counter >= input.length) { ptr = fallback; return "fal";}
+        while(input[counter] == ' ')
+        {
+            counter++;
+            if(counter >= input.length) { ptr = fallback; return "fal"; }
+        }
+        String temp="";
+        if(input[counter++] == '"')
+        {
+            if(counter >= input.length) { ptr = fallback; return "fal";}
+            while(input[counter] != '"')
+            {
+                temp = temp +input[counter];
+                counter++;
+                if(counter >= input.length) { ptr = fallback; return "fal";}
+            }
+            return temp;
+        }
+        if(input[counter] == '{')
+        { 
+            int countBracket = 1;
+            while(countBracket != 0)
+            {
+                while(input[counter] != '}')
+                {
+                    temp = temp + input[counter];
+                    counter++;
+                    if(counter >= input.length) {ptr = fallback; return "fal";}
+                    if(input[counter] == '{') countBracket++;
+                }
+                temp = temp + input[counter];
+                counter ++;
+                if(counter >=input.length) { ptr = fallback; return "fal";}
+                countBracket--;
+            }
+            return temp;
+        }
+        if(input[counter] == '[')
+        {
+            int countBracket = 1;
+            while(countBracket != 0)
+            {
+                while(input[counter] != ']')
+                {
+                    temp = temp + input[counter];
+                    counter++;
+                    if(counter >= input.length) {ptr = fallback; return "fal";}
+                    if(input[counter] == '[') countBracket++;
+                }
+                temp = temp + input[counter];
+                counter ++;
+                if(counter >=input.length) { ptr = fallback; return "fal";}
+                countBracket--;
+            }
+            return temp;
+        }
+        if (((input[counter]>='0') && (input[counter]<='9')) || (input[counter] == '-'))
+        {
+            while(input[counter] != ' ' || input[counter] != ',' || input[counter] != '}' || input[counter] != ']')
+            {
+                temp = temp + input[counter];
+                counter++;
+                if(counter >= input.length) { ptr = fallback; return "fal"; }
+            }
+            return temp;
+        }
+        if ((input[counter]=='t') || (input[counter]=='f') || (input[counter]=='n'))
+        {
+            int i=0;
+    	    if ((input[counter]=='t'))
+    	    {
+    		    while (i<4)
+    		    {
+    			    temp+=input[counter];
+    			    counter++;
+    			    if(counter>=input.length) {ptr=fallback;return "fal";}
+    			    i++;
+    		    }
+    		    if (temp.compareTo("true")==0)
+    			    return temp;
+    	    }
+    	    if ((input[counter]=='f'))
+    	    {
+    		    while (i<5)
+    		    {
+    			    temp+=input[counter];
+    			    counter++;
+    			    if(counter>=input.length) {ptr=fallback;return "fal";}
+    			    i++;
+    		    }
+    		    if (temp.compareTo("false")==0)
+    			    return temp;
+    	    }
+    	    if ((input[counter]=='n'))
+    	    {
+    		    while (i<4)
+    		    {
+    			    temp+=input[counter];
+    			    counter++;
+    			    if(counter>=input.length) {ptr=fallback;return "fal";}
+    			    i++;
+    		    }
+    		    if (temp.compareTo("null")==0)
+    			    return temp;
+    	    }
+        }
+        return "";
     }
     public static boolean string()
     {
@@ -282,9 +401,10 @@ public class JsonP
             }
             return false;
         }
-        if (((input[ptr]>='0') && (input[ptr]<='9')) || (input[ptr++] == '-'))
+        if (((input[ptr]>='0') && (input[ptr]<='9')) || (input[ptr] == '-'))
         {
-		if(ptr>=input.length) {ptr=fallback;return false;}
+            if(input[ptr] == '-') ptr++;
+		    if(ptr>=input.length) {ptr=fallback;return false;}
         	if (number() == true)
         	{
         		return true;
@@ -300,7 +420,9 @@ public class JsonP
         	return false;
         }
         else
-        	return false;
+        {
+            return false;
+        }
     }
     
     public static boolean bool()
@@ -516,5 +638,15 @@ public class JsonP
                 }
         }
         return true;
+    }
+}
+class JSONObject
+{
+    private String key;
+    private Object value;
+    JSONObject(String key, Object value)
+    {
+        this.key = key;
+        this.value = value;
     }
 }
