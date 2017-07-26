@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 public class JsonP
 {
     public static int ptr;
@@ -6,8 +7,24 @@ public class JsonP
     public static HashMap<String,JSONObject> keys = new HashMap<String,JSONObject>(); 
     public static void main(String gg[])
     {
-        System.out.println("Enter the input string:");
-        String s = new Scanner(System.in).nextLine();
+    	String s="";
+    	try
+		{
+			InputStream is=new FileInputStream("example.txt");
+			int size=is.available();
+			for (int i=0;i<size;i++)
+				s=s+(char)is.read();
+			s=s.replace("\n","").replace("\t","").replace(" ","");;
+			//s=s.replace("\t","");
+			//s=s.replace(" ","");
+			is.close();
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+        //System.out.println("Enter the input string:");
+        //String s = new Scanner(System.in).nextLine();
         //String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         input = s.toCharArray();
         if(input.length < 1)
@@ -197,14 +214,14 @@ public class JsonP
     	}
     	if(!keys.containsKey(temp))
     	{
-    		String keyValue = createValue();
+    		/*String keyValue = createValue();
             if(keyValue.compareTo("fal") == 0)
             {
                 ptr = fallback;
                 return false;
             }
             JSONObject jsonObject = new JSONObject(temp,keyValue);
-    		keys.put(temp,jsonObject);	
+    		keys.put(temp,jsonObject);	*/
     		return true;
     	}
     	else
