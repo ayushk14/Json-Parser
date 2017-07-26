@@ -6,9 +6,9 @@ public class JsonP
     public static HashMap<String,JSONObject> keys = new HashMap<String,JSONObject>(); 
     public static void main(String gg[])
     {
-        System.out.println("Enter the input string:");
-        String s = new Scanner(System.in).nextLine();
-        //String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
+        //System.out.println("Enter the input string:");
+        //String s = new Scanner(System.in).nextLine();
+        String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         input = s.toCharArray();
         if(input.length < 1)
         {
@@ -198,13 +198,14 @@ public class JsonP
     	if(!keys.containsKey(temp))
     	{
     		String keyValue = createValue();
-            if(keyValue.compareTo("fal") == 0)
+            System.out.println(keyValue);
+            /*if(keyValue.compareTo("fal") == 0)
             {
                 ptr = fallback;
                 return false;
             }
             JSONObject jsonObject = new JSONObject(temp,keyValue);
-    		keys.put(temp,jsonObject);	
+    		keys.put(temp,jsonObject);*/	
     		return true;
     	}
     	else
@@ -218,6 +219,13 @@ public class JsonP
     {
         int counter = ptr;
         int fallback = ptr;
+        counter++;
+        if(counter >= input.length) {ptr = fallback; return "fal";}
+        while(input[counter] == ' ')
+        {
+            counter++;
+            if(counter >= input.length) { ptr = fallback; return "fal"; }
+        }
         if(input[counter] == ':') counter++;
         if(counter >= input.length) { ptr = fallback; return "fal";}
         while(input[counter] == ' ')
@@ -226,8 +234,9 @@ public class JsonP
             if(counter >= input.length) { ptr = fallback; return "fal"; }
         }
         String temp="";
-        if(input[counter++] == '"')
+        if(input[counter] == '"')
         {
+            counter++;
             if(counter >= input.length) { ptr = fallback; return "fal";}
             while(input[counter] != '"')
             {
@@ -277,7 +286,7 @@ public class JsonP
         }
         if (((input[counter]>='0') && (input[counter]<='9')) || (input[counter] == '-'))
         {
-            while(input[counter] != ' ' || input[counter] != ',' || input[counter] != '}' || input[counter] != ']')
+            while(input[counter] != ' ' && input[counter] != ',' && input[counter] != '}' && input[counter] != ']')
             {
                 temp = temp + input[counter];
                 counter++;
