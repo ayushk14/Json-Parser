@@ -24,9 +24,9 @@ public class JsonP
 			System.out.println(e.getMessage());
 		}
 */
-        System.out.println("Enter the input string:");
-        String s = new Scanner(System.in).nextLine();
-        //String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
+//        System.out.println("Enter the input string:");
+//        String s = new Scanner(System.in).nextLine();
+        String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         input = s.toCharArray();
         if(input.length < 1)
         {
@@ -237,25 +237,30 @@ public class JsonP
     {
         int counter = ptr;
         int fallback = ptr;
-	counter++;
-        if(counter >= input.length) { ptr = fallback;System.out.println("241"); return "fal";}
-        if(input[counter] == ':') counter++;
-        if(counter >= input.length) { ptr = fallback;System.out.println("243"); return "fal";}
+	    counter++;
+        if(counter >= input.length) { ptr = fallback; return "fal";}
         while(input[counter] == ' ')
         {
             counter++;
-            if(counter >= input.length) { ptr = fallback;System.out.println("247"); return "fal"; }
+            if(counter >= input.length) {ptr = fallback;return "fal";}
+        }
+        if(input[counter] == ':') counter++;
+        if(counter >= input.length) { ptr = fallback;return "fal";}
+        while(input[counter] == ' ')
+        {
+            counter++;
+            if(counter >= input.length) { ptr = fallback; return "fal"; }
         }
         String temp="";
         if(input[counter] == '"')
         {
 		counter++;
-            if(counter >= input.length) { ptr = fallback;System.out.println("253"); return "fal";}
+            if(counter >= input.length) { ptr = fallback; return "fal";}
             while(input[counter] != '"')
             {
                 temp = temp +input[counter];
                 counter++;
-                if(counter >= input.length) { ptr = fallback;System.out.println("258"); return "fal";}
+                if(counter >= input.length) { ptr = fallback;return "fal";}
             }
             return temp;
         }
@@ -268,12 +273,12 @@ public class JsonP
                 {
                     temp = temp + input[counter];
                     counter++;
-                    if(counter >= input.length) {ptr = fallback; System.out.println("271");return "fal";}
+                    if(counter >= input.length) {ptr = fallback;return "fal";}
                     if(input[counter] == '{') countBracket++;
                 }
                 temp = temp + input[counter];
                 counter ++;
-                if(counter >=input.length) { ptr = fallback; System.out.println("276");return "fal";}
+                if(counter >=input.length) { ptr = fallback;return "fal";}
                 countBracket--;
             }
             return temp;
@@ -303,7 +308,7 @@ public class JsonP
             {
                 temp = temp + input[counter];
                 counter++;
-                if(counter >= input.length) { ptr = fallback;System.out.println("7"); return "fal"; }
+                if(counter >= input.length) { ptr = fallback;return "fal"; }
             }
             return temp;
         }
