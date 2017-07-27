@@ -4,13 +4,18 @@ public class JsonP
 {
     public static int ptr;
     public static char[] input;
-    public static HashMap<String,JSONObject> keys = new HashMap<String,JSONObject>(); 
-    public static void main(String gg[])
+    public String s="";
+    public static HashMap<String,String> keys = new HashMap<String,String>();
+    public JsonP(String filename)
     {
-/*    	String s="";
+    	this.input = parseFile(filename);
+    }
+    private char [] parseFile(String filename)
+    {
+    	/*
     	try
 		{
-			InputStream is=new FileInputStream("example.txt");
+			InputStream is=new FileInputStream(filename);
 			int size=is.available();
 			for (int i=0;i<size;i++)
 				s=s+(char)is.read();
@@ -22,31 +27,33 @@ public class JsonP
 		catch(IOException e)
 		{
 			System.out.println(e.getMessage());
-		}
-*/
-//        System.out.println("Enter the input string:");
-//        String s = new Scanner(System.in).nextLine();
-        String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
-        input = s.toCharArray();
-        if(input.length < 1)
+		}*/
+
+		System.out.println("Enter the input string:");
+		String s = new Scanner(System.in).nextLine();
+        //s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
+        //s = "{\"sdf\":234,\"we\":[11,22]}";
+        return s.toCharArray();
+    }
+    public static boolean validateAndParse()
+    {
+    	if(input.length < 1)
         {
             System.out.println("The input string is invalid.");
-            System.exit(0);
+            return false;
         }
         ptr = 0;
-        boolean isValid = validate();
+        boolean isValid = object();
         if((isValid) && (ptr == input.length))
         {
             System.out.println("The input json string is valid.");
+            return true;
         }
         else
         {
             System.out.println("The input json string is invalid.");
+            return false;
         }
-    }
-    public static boolean validate()
-    {
-        return object();
     }
     public static boolean check()
     {
@@ -89,7 +96,7 @@ public class JsonP
             {
                 ptr++;
 //				System.out.println(Thread.currentThread().getStackTrace()[2].getMethodName());
-				String callerMethodName = "validate";
+				String callerMethodName = "validateAndParse";
 				if(callerMethodName.equals(Thread.currentThread().getStackTrace()[2].getMethodName()))
 				{
 					return true;
@@ -216,14 +223,13 @@ public class JsonP
     	if(!keys.containsKey(temp))
     	{
     		String keyValue = createValue();
-		System.out.println(keyValue);
-/*            if(keyValue.compareTo("fal") == 0)
+			//System.out.println(keyValue);
+            if(keyValue.compareTo("fal") == 0)
             {
                 ptr = fallback;
                 return false;
             }
-            JSONObject jsonObject = new JSONObject(temp,keyValue);
-    		keys.put(temp,jsonObject);	*/
+    		keys.put(temp,keyValue);
     		return true;
     	}
     	else
@@ -666,8 +672,12 @@ public class JsonP
         }
         return true;
     }
+    public static Object getValue(String k)
+    {
+    	return keys.get(k);
+    }
 }
-class JSONObject
+/*class JSONObject
 {
     private String key;
     private Object value;
@@ -676,4 +686,4 @@ class JSONObject
         this.key = key;
         this.value = value;
     }
-}
+}*/
