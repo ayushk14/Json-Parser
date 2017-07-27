@@ -7,7 +7,7 @@ public class JsonP
     public static HashMap<String,JSONObject> keys = new HashMap<String,JSONObject>(); 
     public static void main(String gg[])
     {
-    	String s="";
+/*    	String s="";
     	try
 		{
 			InputStream is=new FileInputStream("example.txt");
@@ -23,8 +23,9 @@ public class JsonP
 		{
 			System.out.println(e.getMessage());
 		}
-        //System.out.println("Enter the input string:");
-        //String s = new Scanner(System.in).nextLine();
+*/
+        System.out.println("Enter the input string:");
+        String s = new Scanner(System.in).nextLine();
         //String s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         input = s.toCharArray();
         if(input.length < 1)
@@ -214,8 +215,9 @@ public class JsonP
     	}
     	if(!keys.containsKey(temp))
     	{
-    		/*String keyValue = createValue();
-            if(keyValue.compareTo("fal") == 0)
+    		String keyValue = createValue();
+		System.out.println(keyValue);
+/*            if(keyValue.compareTo("fal") == 0)
             {
                 ptr = fallback;
                 return false;
@@ -235,22 +237,25 @@ public class JsonP
     {
         int counter = ptr;
         int fallback = ptr;
+	counter++;
+        if(counter >= input.length) { ptr = fallback;System.out.println("241"); return "fal";}
         if(input[counter] == ':') counter++;
-        if(counter >= input.length) { ptr = fallback; return "fal";}
+        if(counter >= input.length) { ptr = fallback;System.out.println("243"); return "fal";}
         while(input[counter] == ' ')
         {
             counter++;
-            if(counter >= input.length) { ptr = fallback; return "fal"; }
+            if(counter >= input.length) { ptr = fallback;System.out.println("247"); return "fal"; }
         }
         String temp="";
-        if(input[counter++] == '"')
+        if(input[counter] == '"')
         {
-            if(counter >= input.length) { ptr = fallback; return "fal";}
+		counter++;
+            if(counter >= input.length) { ptr = fallback;System.out.println("253"); return "fal";}
             while(input[counter] != '"')
             {
                 temp = temp +input[counter];
                 counter++;
-                if(counter >= input.length) { ptr = fallback; return "fal";}
+                if(counter >= input.length) { ptr = fallback;System.out.println("258"); return "fal";}
             }
             return temp;
         }
@@ -263,12 +268,12 @@ public class JsonP
                 {
                     temp = temp + input[counter];
                     counter++;
-                    if(counter >= input.length) {ptr = fallback; return "fal";}
+                    if(counter >= input.length) {ptr = fallback; System.out.println("271");return "fal";}
                     if(input[counter] == '{') countBracket++;
                 }
                 temp = temp + input[counter];
                 counter ++;
-                if(counter >=input.length) { ptr = fallback; return "fal";}
+                if(counter >=input.length) { ptr = fallback; System.out.println("276");return "fal";}
                 countBracket--;
             }
             return temp;
@@ -294,11 +299,11 @@ public class JsonP
         }
         if (((input[counter]>='0') && (input[counter]<='9')) || (input[counter] == '-'))
         {
-            while(input[counter] != ' ' || input[counter] != ',' || input[counter] != '}' || input[counter] != ']')
+            while(input[counter] != ' ' && input[counter] != ',' && input[counter] != '}' && input[counter] != ']')
             {
                 temp = temp + input[counter];
                 counter++;
-                if(counter >= input.length) { ptr = fallback; return "fal"; }
+                if(counter >= input.length) { ptr = fallback;System.out.println("7"); return "fal"; }
             }
             return temp;
         }
