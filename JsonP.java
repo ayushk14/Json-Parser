@@ -52,8 +52,33 @@ public class JsonP
         }
         else
         {
+	        traverse();
             System.out.println("The input json string is invalid.");
             return false;
+        }
+    }
+    private static void traverse()
+    {
+        int x;
+        ptr--;
+        if(ptr == input.length -1)
+        {
+            System.out.println("Reached end of file, while parsing");
+        }
+        else
+        {
+            if(ptr + 11 < input.length)
+            {
+                System.out.println("Input length :"+input.length);
+                System.out.println("Value of ptr"+ptr);
+                for(x=ptr; x<5; x++) System.out.print(input[x]);
+            }
+            else
+            {
+                for(x=ptr; x<input.length;x++) System.out.print(input[x]);
+            }
+            System.out.print("\n");
+            System.out.println("^\tError");
         }
     }
     public static boolean check()
