@@ -5,7 +5,7 @@ public class MyJsonParser
     	JsonP jp=new JsonP("example.txt");
     	boolean flag=jp.validateAndParse();
     	System.out.println(flag);
-    	Object value=jp.getValue("four");
+    	Object value=jp.getValue("five");
     	if (value==null)
     		System.out.println("key not found");
     	else
