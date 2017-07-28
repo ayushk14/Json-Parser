@@ -33,7 +33,6 @@ public class JsonP
 		//String s = new Scanner(System.in).nextLine();
   //      s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         //s = "{\"sdf\":234,\"we\":[11,22]}";
-	System.out.println(s);
         return s.toCharArray();
     }
     public static boolean validateAndParse()
@@ -69,9 +68,7 @@ public class JsonP
         {
             if(ptr + 11 < input.length)
             {
-                System.out.println("Input length :"+input.length);
-                System.out.println("Value of ptr"+ptr);
-                for(x=ptr; x<5; x++) System.out.print(input[x]);
+                for(x=ptr; x<ptr+11; x++) System.out.print(input[x]);
             }
             else
             {
@@ -83,44 +80,44 @@ public class JsonP
     }
     public static boolean check()
     {
-    	int fallback = ptr;
+    	 
     	while(input[ptr] == ' ')
     	{	
     		ptr++;
-    		if(ptr>=input.length) {ptr=fallback; return false;}
+    		if(ptr>=input.length) {  return false;}
     	}
     	return true;
     }
     public static boolean object()
     {
-        int fallback = ptr;
+         
 	if(check() == false)
 	{
-		ptr = fallback;
+		 
 		return false;
 	}
         if((input[ptr++] != '{'))
         {
-            ptr = fallback;
+             
             return false;
         }
         if(check() == false)
         {
-        	ptr = fallback;
+        	 
         	return false;
         }
-		if(ptr>=input.length) {ptr=fallback;return false;}
+		if(ptr>=input.length) { return false;}
         if((input[ptr] =='}'))
         {
             ptr++;
-            if(ptr>=input.length) {ptr=fallback;return false;}
+            if(ptr>=input.length) { return false;}
             return true;
         }
         else
         {
             if(member() == false)
             {
-                ptr = fallback;
+                 
                 return false;
             }
             if(input[ptr] =='}')
@@ -134,7 +131,7 @@ public class JsonP
 				}
             	if(ptr>=input.length) 
                 {
-                	ptr=fallback;
+                	 
                 	return false;
                 }
                 return true;
@@ -145,10 +142,10 @@ public class JsonP
     
     public static boolean member()
     {
-        int fallback = ptr;
+         
         if(pair() == false)
         {
-            ptr = fallback;
+             
             return false;
         }
         else
@@ -161,19 +158,19 @@ public class JsonP
                     if (input[ptr]=='}')
                         return true;
                     ptr++;
-                    if(ptr>=input.length) {ptr=fallback;return false;}
-                    ptr = fallback;
+                    if(ptr>=input.length) { return false;}
+                     
                     return false;
                 }
-                if(ptr>=input.length) {ptr=fallback;return false;}
+                if(ptr>=input.length) { return false;}
                 if(check() == false)
                 {
-                	ptr = fallback;
+                	 
                 	return false;
                 }
                 if(member() == false)
                 {
-                    ptr = fallback;
+                     
                     return false;
                 }
             }
@@ -183,54 +180,54 @@ public class JsonP
     
     public static boolean pair()
     {
-        int fallback = ptr;
+         
         if(keyString() == false)
         {
-            ptr = fallback;
+             
             return false;
         }
         if(check() == false)
         {
-        	ptr = fallback;
+        	 
         	return false;
         }
         if(input[ptr++] != ':')
         {
-            ptr = fallback;
+             
             return false;
         }
-        if(ptr>=input.length) {ptr=fallback;return false;}
+        if(ptr>=input.length) { return false;}
         if(check() == false)
         {
-        	ptr = fallback;
+        	 
         	return false;
         }
         if(value() == false)
         {
-            ptr = fallback;
+             
             return false;
         }
         return true;
     }
     public static boolean keyString()
     {
-    	int fallback = ptr;
+    	 
     	if(input[ptr++] != '"')
     	{
-    		ptr =fallback;
+    		 
     		return false;
     	}
-    	if(ptr>=input.length) {ptr = fallback; return false;}
+    	if(ptr>=input.length) {  return false;}
     	if(keyChars() == false)
     	{
-    		ptr =fallback;
+    		 
     		return false;
     	}
     	if(input[ptr++] == '"')
     	{
     		if(ptr>=input.length)
     		{	
-    			ptr =fallback;
+    			 
     			return false;
     		}
     		return true;
@@ -239,7 +236,7 @@ public class JsonP
     }
     public static boolean keyChars()
     {
-    	int fallback = ptr;
+    	 
     	String temp=new String("");
     	while(input[ptr] != '"')
     	{
@@ -247,7 +244,7 @@ public class JsonP
     		ptr++;
     		if(ptr>=input.length)
     		{
-    			ptr = fallback;
+    			 
     			return false;
     		}
     	}
@@ -257,7 +254,7 @@ public class JsonP
 			//System.out.println(keyValue);
             if(keyValue.compareTo("fal") == 0)
             {
-                ptr = fallback;
+                 
                 return false;
             }
     		keys.put(temp,keyValue);
@@ -265,7 +262,7 @@ public class JsonP
     	}
     	else
     	{
-    		ptr = fallback;
+    		 
     		System.out.println("Duplicate key :"+ temp);
     		return false;
     	}
@@ -273,31 +270,31 @@ public class JsonP
     public static String createValue()
     {
         int counter = ptr;
-        int fallback = ptr;
+         
 	    counter++;
-        if(counter >= input.length) { ptr = fallback; return "fal";}
+        if(counter >= input.length) {   return "fal";}
         while(input[counter] == ' ')
         {
             counter++;
-            if(counter >= input.length) {ptr = fallback;return "fal";}
+            if(counter >= input.length) { return "fal";}
         }
         if(input[counter] == ':') counter++;
-        if(counter >= input.length) { ptr = fallback;return "fal";}
+        if(counter >= input.length) {  return "fal";}
         while(input[counter] == ' ')
         {
             counter++;
-            if(counter >= input.length) { ptr = fallback; return "fal"; }
+            if(counter >= input.length) {   return "fal"; }
         }
         String temp="";
         if(input[counter] == '"')
         {
 		counter++;
-            if(counter >= input.length) { ptr = fallback; return "fal";}
+            if(counter >= input.length) {   return "fal";}
             while(input[counter] != '"')
             {
                 temp = temp +input[counter];
                 counter++;
-                if(counter >= input.length) { ptr = fallback;return "fal";}
+                if(counter >= input.length) {  return "fal";}
             }
             return temp;
         }
@@ -310,12 +307,12 @@ public class JsonP
                 {
                     temp = temp + input[counter];
                     counter++;
-                    if(counter >= input.length) {ptr = fallback;return "fal";}
+                    if(counter >= input.length) { return "fal";}
                     if(input[counter] == '{') countBracket++;
                 }
                 temp = temp + input[counter];
                 counter ++;
-                if(counter >=input.length) { ptr = fallback;return "fal";}
+                if(counter >=input.length) {  return "fal";}
                 countBracket--;
             }
             return temp;
@@ -329,12 +326,12 @@ public class JsonP
                 {
                     temp = temp + input[counter];
                     counter++;
-                    if(counter >= input.length) {ptr = fallback; return "fal";}
+                    if(counter >= input.length) {  return "fal";}
                     if(input[counter] == '[') countBracket++;
                 }
                 temp = temp + input[counter];
                 counter ++;
-                if(counter >=input.length) { ptr = fallback; return "fal";}
+                if(counter >=input.length) {   return "fal";}
                 countBracket--;
             }
             return temp;
@@ -345,7 +342,7 @@ public class JsonP
             {
                 temp = temp + input[counter];
                 counter++;
-                if(counter >= input.length) { ptr = fallback;return "fal"; }
+                if(counter >= input.length) {  return "fal"; }
             }
             return temp;
         }
@@ -358,7 +355,7 @@ public class JsonP
     		    {
     			    temp+=input[counter];
     			    counter++;
-    			    if(counter>=input.length) {ptr=fallback;return "fal";}
+    			    if(counter>=input.length) { return "fal";}
     			    i++;
     		    }
     		    if (temp.compareTo("true")==0)
@@ -370,7 +367,7 @@ public class JsonP
     		    {
     			    temp+=input[counter];
     			    counter++;
-    			    if(counter>=input.length) {ptr=fallback;return "fal";}
+    			    if(counter>=input.length) { return "fal";}
     			    i++;
     		    }
     		    if (temp.compareTo("false")==0)
@@ -382,7 +379,7 @@ public class JsonP
     		    {
     			    temp+=input[counter];
     			    counter++;
-    			    if(counter>=input.length) {ptr=fallback;return "fal";}
+    			    if(counter>=input.length) { return "fal";}
     			    i++;
     		    }
     		    if (temp.compareTo("null")==0)
@@ -393,45 +390,45 @@ public class JsonP
     }
     public static boolean string()
     {
-        int fallback = ptr;
+         
         if(input[ptr++] != '"')
         {
-            ptr = fallback;
+             
             return false;
         }
-        if(ptr>=input.length) {ptr=fallback;return false;}
+        if(ptr>=input.length) { return false;}
         if(input[ptr++] == '"')
         {
             return true;
         }
         else
         {
-            if(ptr>=input.length) {ptr=fallback;return false;}
+            if(ptr>=input.length) { return false;}
             if(chars() == false)
             {
-                ptr = fallback;
+                 
                 return false;
             }
             if(input[ptr++] != '"')
             {
-                ptr = fallback;
+                 
                 return false;
             }
-            if(ptr>=input.length) {ptr=fallback;return false;}
+            if(ptr>=input.length) { return false;}
         }
         return true;
     }
     
     public static boolean chars()
     {
-        int fallback = ptr;
+         
         ptr--;
         while(input[ptr] !='"')
         {
             ptr++;
             if (ptr>=input.length)
             {
-                ptr = fallback;
+                 
             	return false;
             }
         }
@@ -440,7 +437,7 @@ public class JsonP
     
     public static boolean value()
     {
-        int fallback = ptr;
+         
         if (input[ptr]=='"')
         {
             if(string() == true)
@@ -468,7 +465,7 @@ public class JsonP
         if (((input[ptr]>='0') && (input[ptr]<='9')) || (input[ptr] == '-'))
         {
             if(input[ptr] == '-') ptr++;
-		    if(ptr>=input.length) {ptr=fallback;return false;}
+		    if(ptr>=input.length) { return false;}
         	if (number() == true)
         	{
         		return true;
@@ -491,7 +488,7 @@ public class JsonP
     
     public static boolean bool()
     {
-	int fallback=ptr;
+	 
     	String temp="";
     	int i=0;
     	if ((input[ptr]=='t'))
@@ -500,7 +497,7 @@ public class JsonP
     		{
     			temp+=input[ptr];
     			ptr++;
-    			if(ptr>=input.length) {ptr=fallback;return false;}
+    			if(ptr>=input.length) { return false;}
     			i++;
     		}
     		if (temp.compareTo("true")==0)
@@ -512,7 +509,7 @@ public class JsonP
     		{
     			temp+=input[ptr];
     			ptr++;
-    			if(ptr>=input.length) {ptr=fallback;return false;}
+    			if(ptr>=input.length) { return false;}
     			i++;
     		}
     		if (temp.compareTo("false")==0)
@@ -524,7 +521,7 @@ public class JsonP
     		{
     			temp+=input[ptr];
     			ptr++;
-    			if(ptr>=input.length) {ptr=fallback;return false;}
+    			if(ptr>=input.length) { return false;}
     			i++;
     		}
     		if (temp.compareTo("null")==0)
@@ -534,24 +531,24 @@ public class JsonP
     }
     public static boolean number()
     {
-        int fallback = ptr;
+         
         if(integer() == false)
         {
-            ptr = fallback;
+             
             return false;
         }
         if(input[ptr] == '.')
         {
             if(fraction() == false)
             {
-                ptr = fallback;
+                 
                 return false;
             }
             if(input[ptr] == 'e' || input[ptr] == 'E')
             {
                 if(exp() == false)
                 {
-                    ptr = fallback;
+                     
                     return false;
                 }
             }
@@ -561,7 +558,7 @@ public class JsonP
         {
             if(exp() == false)
             {
-                ptr = fallback;
+                 
                 return false;
             }
         }
@@ -569,57 +566,57 @@ public class JsonP
     }
     public static boolean exp()
     {
-        int fallback = ptr;
+         
         ptr++;
-	if(ptr>=input.length) {ptr=fallback;return false;}
+	if(ptr>=input.length) { return false;}
         if(input[ptr] == '+' || input[ptr] =='-')
         {
             ptr++;
-	    if(ptr>=input.length) {ptr=fallback;return false;}
+	    if(ptr>=input.length) { return false;}
             if(integer() == false)
             {
-		ptr = fallback;
+		 
 		return false;
             }
             return true;
         }
         if(integer() == false)
         {
-            ptr = fallback;
+             
             return false;
         }
         return true;
     }
     public static boolean fraction()
     {
-        int fallback = ptr;
+         
         if(input[ptr++] != '.')
         {
-            ptr = fallback;
+             
             return false;
         }
-	if(ptr>=input.length) {ptr=fallback;return false;}
+	if(ptr>=input.length) { return false;}
         if(input[ptr] == 'e' || input[ptr] == 'E')
         {
-            ptr = fallback;
+             
             return false;
         }
         if(integer() == false)
         {
-            ptr = fallback;
+             
             return false;
         }
         return true;
     }
     public static boolean integer()
     {
-	int fallback=ptr;
+	 
     	while ((input[ptr]!=',') && (input[ptr]!='}') && (input[ptr]!=']') && (input[ptr] != '.') && (input[ptr]!='e') && (input[ptr]!='E'))
     	{
     		if ((input[ptr]>='0') && (input[ptr]<='9'))
     		{
     			ptr++;
-    			if(ptr>=input.length) {ptr=fallback;return false;}
+    			if(ptr>=input.length) { return false;}
     		}
     		else
     		{
@@ -635,16 +632,16 @@ public class JsonP
     
     public static boolean array()
     {
-        int fallback = ptr;
+         
         if(input[ptr++] != '[')
         {
-            ptr = fallback;
+             
             return false;
         }
-		if(ptr>=input.length) {ptr=fallback;return false;}
+		if(ptr>=input.length) { return false;}
 		if(check() == false)
 		{
-			ptr = fallback;
+			 
 			return false;
 		}
         if(input[ptr] ==']')
@@ -656,13 +653,13 @@ public class JsonP
         {
             if(elements() == false)
             {
-                ptr = fallback;
+                 
                 return false;
             }
             if(input[ptr] ==']')
             {
                 ptr++;
-		if(ptr>=input.length) {ptr=fallback;return false;}
+		if(ptr>=input.length) { return false;}
                 return true;
             }
         }
@@ -671,33 +668,33 @@ public class JsonP
     
     public static boolean elements()
     {
-        int fallback = ptr;
+         
         if(value() == false)
         {
-            ptr = fallback;
+             
             return false;
         }
         else
         {
                 if(input[ptr++] != ',')
                 {
-		    if(ptr>=input.length) {ptr=fallback;return false;}
+		    if(ptr>=input.length) { return false;}
                     ptr--;
                     if (input[ptr]==']')
                         return true;
                     ptr++;
-		    if(ptr>=input.length) {ptr=fallback;return false;}
-                    ptr = fallback;
+		    if(ptr>=input.length) { return false;}
+                     
                     return false;
                 }
                 if(check() == false)
                 {
-                	ptr =fallback;
+                	 
                 	return false;
                 }
                 if(elements() == false)
                 {
-                    ptr = fallback;
+                     
                     return false;
                 }
         }
