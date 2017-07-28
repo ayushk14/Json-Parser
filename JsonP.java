@@ -676,6 +676,30 @@ public class JsonP
     {
     	return keys.get(k);
     }
+    public static Object getValueByPath(String path)
+    {
+        int flag = 0;
+        String errorMessage=new String("");
+        String [] paths = path.split("/");
+        for(String p : paths)
+        {
+            if(keys.containsKey(p))
+            {
+                continue;
+            }
+            else 
+            {
+                flag = 1;
+                break;
+            }
+        }
+        if(flag == 1)
+        {
+            errorMessage = errorMessage + "Invalid path.";
+            return errorMessage;
+        }
+        return keys.get(paths[paths.length-1]);
+    }
 }
 /*class JSONObject
 {
