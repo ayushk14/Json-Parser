@@ -12,14 +12,14 @@ public class JsonP
     }
     private char [] parseFile(String filename)
     {
-    	/*
+    	
     	try
 		{
 			InputStream is=new FileInputStream(filename);
 			int size=is.available();
 			for (int i=0;i<size;i++)
 				s=s+(char)is.read();
-			s=s.replace("\n","").replace("\t","").replace(" ","");;
+			s=s.replace("\n","").replace("\t","").replace("  ","#$#").replace("#$#","");
 			//s=s.replace("\t","");
 			//s=s.replace(" ","");
 			is.close();
@@ -27,12 +27,13 @@ public class JsonP
 		catch(IOException e)
 		{
 			System.out.println(e.getMessage());
-		}*/
+		}
 
-		System.out.println("Enter the input string:");
-		String s = new Scanner(System.in).nextLine();
-        //s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
+		//System.out.println("Enter the input string:");
+		//String s = new Scanner(System.in).nextLine();
+  //      s = "{    \"sdf\"  :    234     ,    \"we\":[        11   ,   22]}";
         //s = "{\"sdf\":234,\"we\":[11,22]}";
+	System.out.println(s);
         return s.toCharArray();
     }
     public static boolean validateAndParse()
@@ -68,6 +69,11 @@ public class JsonP
     public static boolean object()
     {
         int fallback = ptr;
+	if(check() == false)
+	{
+		ptr = fallback;
+		return false;
+	}
         if((input[ptr++] != '{'))
         {
             ptr = fallback;
