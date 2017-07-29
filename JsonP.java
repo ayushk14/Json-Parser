@@ -78,7 +78,7 @@ public class JsonP
             System.out.println("^\tError");
         }
     }
-    public static boolean check()
+    private static boolean check()
     {
     	 
     	while(input[ptr] == ' ')
@@ -88,7 +88,7 @@ public class JsonP
     	}
     	return true;
     }
-    public static boolean object()
+    private static boolean object()
     {
          
 	if(check() == false)
@@ -140,7 +140,7 @@ public class JsonP
         return true;
     }
     
-    public static boolean member()
+    private static boolean member()
     {
          
         if(pair() == false)
@@ -178,7 +178,7 @@ public class JsonP
         return true;
     }
     
-    public static boolean pair()
+    private static boolean pair()
     {
          
         if(keyString() == false)
@@ -209,7 +209,7 @@ public class JsonP
         }
         return true;
     }
-    public static boolean keyString()
+    private static boolean keyString()
     {
     	 
     	if(input[ptr++] != '"')
@@ -234,7 +234,7 @@ public class JsonP
     	}
     	return false;
     }
-    public static boolean keyChars()
+    private static boolean keyChars()
     {
     	 
     	String temp=new String("");
@@ -267,7 +267,7 @@ public class JsonP
     		return false;
     	}
     }
-    public static String createValue()
+    private static String createValue()
     {
         int counter = ptr;
          
@@ -388,7 +388,7 @@ public class JsonP
         }
         return "";
     }
-    public static boolean string()
+    private static boolean string()
     {
          
         if(input[ptr++] != '"')
@@ -419,7 +419,7 @@ public class JsonP
         return true;
     }
     
-    public static boolean chars()
+    private static boolean chars()
     {
          
         ptr--;
@@ -435,7 +435,7 @@ public class JsonP
         return true;
     }
     
-    public static boolean value()
+    private static boolean value()
     {
          
         if (input[ptr]=='"')
@@ -486,7 +486,7 @@ public class JsonP
         }
     }
     
-    public static boolean bool()
+    private static boolean bool()
     {
 	 
     	String temp="";
@@ -529,7 +529,7 @@ public class JsonP
     	}
     	return false;
     }
-    public static boolean number()
+    private static boolean number()
     {
          
         if(integer() == false)
@@ -564,7 +564,7 @@ public class JsonP
         }
         return true;
     }
-    public static boolean exp()
+    private static boolean exp()
     {
          
         ptr++;
@@ -587,7 +587,7 @@ public class JsonP
         }
         return true;
     }
-    public static boolean fraction()
+    private static boolean fraction()
     {
          
         if(input[ptr++] != '.')
@@ -608,7 +608,7 @@ public class JsonP
         }
         return true;
     }
-    public static boolean integer()
+    private static boolean integer()
     {
 	 
     	while ((input[ptr]!=',') && (input[ptr]!='}') && (input[ptr]!=']') && (input[ptr] != '.') && (input[ptr]!='e') && (input[ptr]!='E'))
@@ -630,7 +630,7 @@ public class JsonP
     	return true;
     }
     
-    public static boolean array()
+    private static boolean array()
     {
          
         if(input[ptr++] != '[')
@@ -666,7 +666,7 @@ public class JsonP
         return true;
     }
     
-    public static boolean elements()
+    private static boolean elements()
     {
          
         if(value() == false)
